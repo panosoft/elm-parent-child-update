@@ -154,7 +154,7 @@ updateChild =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    Sub.map ChildModule <| (Child.subscriptions childConfig) model.childModel
+    Sub.map ChildModule <| Child.subscriptions childConfig model.childModel
 
 ```
 N.B. that `updateChild` uses the API function `updateChildApp`. That's because we're at the App level and the App and its children have different `update` function signatures.
@@ -220,7 +220,7 @@ updateGrandchild =
 
 subscriptions : Config msg -> Model -> Sub Msg
 subscriptions config model =
-    Sub.map GrandchildModule <| (Grandchild.subscriptions grandchildConfig) model.grandchildModel
+    Sub.map GrandchildModule <| Grandchild.subscriptions grandchildConfig model.grandchildModel
 
 ```
 N.B. that `updateGrandchild` uses the API function `updateChildParent`. That's because we're NOT at the App level and we and our children have similar `update` function signatures.
