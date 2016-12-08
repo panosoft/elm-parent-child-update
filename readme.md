@@ -118,7 +118,6 @@ type alias Model =
     { childModel : Child.Model Msg
     }
 
-
 init : ( Model, Cmd Msg )
 init =
 	{ childModel = Child.initModel } ! []
@@ -181,6 +180,11 @@ import Grandchild exposing (..)
 type alias Model =
     { grandchildModel : Grandchild.Model Msg
     }
+
+
+type alias Config msg =
+	{ onEvent1 : msg
+	}
 
 
 initModel : Model
