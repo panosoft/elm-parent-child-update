@@ -123,6 +123,11 @@ init =
 	{ childModel = Child.initModel } ! []
 
 
+childConfig : Child.Config
+childConfig =
+	{ onEvent1 = AppMsg1 }
+
+
 type Msg
     = Nop
     | AppMsg1
@@ -131,25 +136,20 @@ type Msg
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-    case msg of
-        Nop ->
-            model ! []
-        AppMsg1 ->
-            model ! []
-        AppMsg2 ->
-            model ! []
-		ChildModule childMsg ->
-			updateChild childMsg
-
-childConfig : Child.Config
-childConfig =
-	{ onEvent1 = AppMsg1 }
-
-
-updateChild : Child.Msg -> Model -> ( Model, Cmd Msg )
-updateChild =
-    ParentChildUpdate.updateChildApp (Child.update childConfig) update .childModel ChildModule (\model childModel -> { model | childModel = childModel })
-
+	let
+		updateChild : Child.Msg -> Model -> ( Model, Cmd Msg )
+		updateChild =
+		    ParentChildUpdate.updateChildApp (Child.update childConfig) update .childModel ChildModule (\model childModel -> { model | childModel = childModel })
+	in
+	    case msg of
+	        Nop ->
+	            model ! []
+	        AppMsg1 ->
+	            model ! []
+	        AppMsg2 ->
+	            model ! []
+			ChildModule childMsg ->
+				updateChild childMsg
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
@@ -192,6 +192,11 @@ initModel =
 	{ grandchildModel = Grandchild.initModel }
 
 
+grandchildConfig : Grandchild.Config
+grandchildConfig =
+	{ onEvent1 = ChildMsg1, onEvent2 = ChildMsg2 }
+
+
 type Msg
     = Nop
     | ChildMsg1
@@ -201,25 +206,20 @@ type Msg
 
 update : Config msg -> Msg -> Model -> ( ( Model, Cmd Msg ), List msg )
 update config msg model =
-    case msg of
-        Nop ->
-            (model ! [], [])
-        ChildMsg1 ->
-            (model ! [], [])
-        ChildMsg2 ->
-            (model ! [], [])
-		GrandchildModule grandchildMsg ->
-			updateGrandChild grandchildMsg
-
-
-grandchildConfig : Grandchild.Config
-grandchildConfig =
-	{ onEvent1 = ChildMsg1, onEvent2 = ChildMsg2 }
-
-
-updateGrandchild : Grandchild.Msg -> Model -> ( ( Model, Cmd Msg ), List msg )
-updateGrandchild =
-    ParentChildUpdate.updateChildParent (Grandchild.update grandchildConfig) update .grandchildModel GrandchildModule (\model grandchildModel -> { model | grandchildModel = grandchildModel })
+	let
+		updateGrandchild : Grandchild.Msg -> Model -> ( ( Model, Cmd Msg ), List msg )
+		updateGrandchild =
+		    ParentChildUpdate.updateChildParent (Grandchild.update grandchildConfig) update .grandchildModel GrandchildModule (\model grandchildModel -> { model | grandchildModel = grandchildModel })
+	in
+	    case msg of
+	        Nop ->
+	            (model ! [], [])
+	        ChildMsg1 ->
+	            (model ! [], [])
+	        ChildMsg2 ->
+	            (model ! [], [])
+			GrandchildModule grandchildMsg ->
+				updateGrandChild grandchildMsg
 
 
 subscriptions : Config msg -> Model -> Sub Msg
