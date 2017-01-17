@@ -1,35 +1,24 @@
-# Helper functions for Stateless Components in Elm
+# Helper functions for Stateless Child Components in Elm
 
 > Micro-library to reduce boilerplate code for implementing Parent/Child communication in stateless components.
 
-## Aren't components bad in Elm
+## What does this do and why do it?
 
-The prevailing belief that `components are bad and functions are good` is mainly because of semantics. When people use the word `component`, many times it conjurs up Objects with internal state. So, the Elm community has avoided this term and instead talks about factoring out functions.
+#### Aren't components bad?
+The prevailing belief that `components are bad and functions are good` is mainly because of semantics. When people use the word `component`, many times it conjurs up `Objects` with `Internal State`. So, the Elm community has avoided this term and instead talks about factoring out functions.
 
-Factoring out functions is fine, but only to a point. When communication between Parent and Child components is warranted, then a simple communication mechanism is desirable.
+That approach works but only to a point. Anytime a Child Component's API is Asynchronous then things become more complicated.
 
-This library provides a mechanism for such communication.
+#### Asynchronous APIs
+After a Child's Asynchronous API call is complete and it must return information back to its Parent then the simplest approach is to do so through a Parent Mesage so that the Parent can update its model.
 
+#### Child models
+When an Asynchronous API call involves MULTIPLE messages back to the Child Component, then the Child must also maintain state and therefore requires its own independent model (that it defines).
 
-## Elm Programs are State Machines
+Also, when the Child Component maintains state across multiple API calls, it also needs its own model.
 
-Messages passed to `update` are Edges of a State Machine. If a message mutates the Model, then the edge goes from the current state into a new state. If a messages does NOT mutate the Model, then the edge loops back on the current state.
-
-As programs grow in complexity, it's easy to just add messages to the current module and to add fields to the Model. But this is just out of convenience not necessarily good coding practices. When a module contains 2 or more State Machines, it should be refactored.
-
-Generally speaking, a `Stateless Component` should be a single State Machine to follow the `Single Responsibilty Principle`.
-
-To properly decompose an Elm program, one should factor out the messages that correspond to a single State Machine and any data from the model that is mutated by those messages into a Child Component. This component is a `Stateless Component` and will have its model passed to it by its Parent.
-
-
-## When to Use
-
-Every Elm program can be thought of as a `Stateless Component`. The Elm Runtime passes in the program's state to `update` for potential mutation. In this library, the top-level is called the `App`. For simple applications, there is no need for additional components. As an App becomes more complex, then additional State Machines may be introduced. When this occurs, then refactoring should be considered.
-
-This need is common in `Server Applications`. For example, imagine a Server Program that contains multiple, independent `Services`. Each `Service` should define its own `Model` and have its own `messages` (which means it must have its own `update` function). Each Service should also be a single State Machine. In this scenario, each Service (Child) needs to communicate back to the Server (App) via Server Messages.
-
-***Anytime a Child Component needs to return messages to its Parent, then this library is useful***
-
+#### This library in a nutshell
+This library supports both mechanisms, i.e. returning messages back to the Parent and passing Child models to Child update functions.
 
 ## Parent/Child Communication
 
