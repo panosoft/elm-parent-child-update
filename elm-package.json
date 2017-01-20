@@ -1,5 +1,5 @@
 {
-    "version": "1.0.3",
+    "version": "1.0.4",
     "summary": "Helper functions for Parent/Child communication in stateless components",
     "repository": "https://github.com/panosoft/elm-parent-child-update.git",
     "license": "Unlicense",

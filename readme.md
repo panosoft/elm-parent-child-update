@@ -198,7 +198,7 @@ update config msg model =
 	let
 		updateGrandchild : Grandchild.Msg -> Model -> ( ( Model, Cmd Msg ), List msg )
 		updateGrandchild =
-		    ParentChildUpdate.updateChildParent (Grandchild.update grandchildConfig) update .grandchildModel GrandchildModule (\model grandchildModel -> { model | grandchildModel = grandchildModel })
+		    ParentChildUpdate.updateChildParent (Grandchild.update grandchildConfig) (update config) .grandchildModel GrandchildModule (\model grandchildModel -> { model | grandchildModel = grandchildModel })
 	in
 	    case msg of
 	        Nop ->
