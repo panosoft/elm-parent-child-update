@@ -10,6 +10,8 @@ module ParentChildUpdate
 
 -}
 
+import Tuple exposing (first)
+
 
 type alias AppUpdate appMsg appModel =
     appMsg -> appModel -> ( appModel, Cmd appMsg )
@@ -101,4 +103,4 @@ updateChildParent childUpdate parentUpdate childModelAccessor childTagger replac
 -}
 updateChildApp : ChildUpdate childMsg childModel appMsg -> AppUpdate appMsg appModel -> ChildModelAccessor appModel childModel -> ChildTagger childMsg appMsg -> ReplaceChildModel appModel childModel -> childMsg -> appModel -> ( appModel, Cmd appMsg )
 updateChildApp childUpdate appUpdate childModelAccessor childTagger replaceChildModel childMsg appModel =
-    fst <| updateChildParentCommon (doAppMsgs appUpdate) childUpdate childModelAccessor childTagger replaceChildModel childMsg appModel
+    first <| updateChildParentCommon (doAppMsgs appUpdate) childUpdate childModelAccessor childTagger replaceChildModel childMsg appModel
