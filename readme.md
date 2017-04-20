@@ -104,7 +104,7 @@ import Child exposing (..)
 
 
 type alias Model =
-    { childModel : Child.Model Msg
+    { childModel : Child.Model
     }
 
 init : ( Model, Cmd Msg )
@@ -138,7 +138,7 @@ update msg model =
 	        AppMsg2 ->
 	            model ! []
 			ChildModule childMsg ->
-				updateChild childMsg
+				updateChild childMsg model
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
@@ -167,7 +167,7 @@ import Grandchild exposing (..)
 
 
 type alias Model =
-    { grandchildModel : Grandchild.Model Msg
+    { grandchildModel : Grandchild.Model
     }
 
 
@@ -208,7 +208,7 @@ update config msg model =
 	        ChildMsg2 ->
 	            (model ! [], [])
 			GrandchildModule grandchildMsg ->
-				updateGrandChild grandchildMsg
+				updateGrandChild grandchildMsg model
 
 
 subscriptions : Config msg -> Model -> Sub Msg
